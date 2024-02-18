@@ -25,7 +25,7 @@ const VIDEO_DETAILS = {
   width: 320, // default, change later
   streaming: false
 }
-const POLLING_INTERVAL = 1000; // ms in-between luminance polls
+const POLLING_INTERVAL = 250; // ms in-between luminance polls
 // Create a canvas element to use late
 const CANVAS = document.createElement('canvas');
 
@@ -124,7 +124,7 @@ function pollLuminance() {
   let avgRelativeLum = luminositySum / (REFS.canvas.width * REFS.canvas.height);
 
   // Update the DOM
-  ELEMS.luminanceOutput.textContent = avgRelativeLum;
+  ELEMS.luminanceOutput.textContent = avgRelativeLum.toFixed(10);
 
   let luminance = avgRelativeLum * 100;
   let aperature = ELEMS.aperature.value;
