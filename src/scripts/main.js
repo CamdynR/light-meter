@@ -9,22 +9,22 @@ import METER from './meter.js';
 // Store DOM element references
 const ELEMS = {
   video: undefined,
-  luminanceOutput: undefined
+  luminanceOutput: undefined,
 };
 const OPTIONS = {
   aperature: [],
   shutterSpeed: [],
-  iso: []
-}
+  iso: [],
+};
 const REFS = {
   canvas: undefined,
-  ctx: undefined
+  ctx: undefined,
 };
 const VIDEO_DETAILS = {
   height: 0, // will be set later
   width: 320, // default, change later
-  streaming: false
-}
+  streaming: false,
+};
 const POLLING_INTERVAL = 250; // ms in-between luminance polls
 // Create a canvas element to use late
 const CANVAS = document.createElement('canvas');
@@ -53,7 +53,9 @@ function queryElements() {
   ELEMS.iso = document.querySelector('#iso');
   // Create number arrays from the options
   OPTIONS.aperature = [...ELEMS.aperature.options].map((e) => Number(e.value));
-  OPTIONS.shutterSpeed = [...ELEMS.shutterSpeed.options].map((e) => Number(e.value));
+  OPTIONS.shutterSpeed = [...ELEMS.shutterSpeed.options].map((e) =>
+    Number(e.value)
+  );
   OPTIONS.iso = [...ELEMS.iso.options].map((e) => Number(e.value));
 }
 
@@ -69,13 +71,12 @@ async function initializeVideoStream() {
     try {
       let streamOpts = {
         video: { facingMode: { ideal: 'environment' } },
-        audio: false
+        audio: false,
       };
       let stream = await navigator.mediaDevices.getUserMedia(streamOpts);
       ELEMS.video.srcObject = stream;
 
       let selectedCamera = stream.getVideoTracks()[0];
-      console.log(`Chosen camera deviceId: ${selectedCamera.getSettings().deviceId}`);
       // Resolve if finished
       initStream = true;
       if (initStream && initVideoSize) resolve();
@@ -85,21 +86,26 @@ async function initializeVideoStream() {
     }
 
     // Update the video dimensions once a video is streaming
-    ELEMS.video.addEventListener('canplay', () => {
-      if (!VIDEO_DETAILS.streaming) {
-        // Grab the correct aspect ratio
-        VIDEO_DETAILS.height = (ELEMS.video.videoHeight / ELEMS.video.videoWidth);
-        VIDEO_DETAILS.height *= VIDEO_DETAILS.width;
-        // Set attributes
-        ELEMS.video.setAttribute('width', VIDEO_DETAILS.width);
-        ELEMS.video.setAttribute('height', VIDEO_DETAILS.height);
-        VIDEO_DETAILS.streaming = true;
+    ELEMS.video.addEventListener(
+      'canplay',
+      () => {
+        if (!VIDEO_DETAILS.streaming) {
+          // Grab the correct aspect ratio
+          VIDEO_DETAILS.height =
+            ELEMS.video.videoHeight / ELEMS.video.videoWidth;
+          VIDEO_DETAILS.height *= VIDEO_DETAILS.width;
+          // Set attributes
+          ELEMS.video.setAttribute('width', VIDEO_DETAILS.width);
+          ELEMS.video.setAttribute('height', VIDEO_DETAILS.height);
+          VIDEO_DETAILS.streaming = true;
 
-        // Resolve if finished
-        initVideoSize = true;
-        if (initStream && initVideoSize) resolve();
-      }
-    }, false);
+          // Resolve if finished
+          initVideoSize = true;
+          if (initStream && initVideoSize) resolve();
+        }
+      },
+      false
+    );
   });
 }
 
@@ -108,7 +114,12 @@ function pollLuminance() {
   REFS.ctx.drawImage(ELEMS.video, 0, 0, REFS.canvas.width, REFS.canvas.height);
 
   // Get the pixel data
-  let data = REFS.ctx.getImageData(0, 0, REFS.canvas.width, REFS.canvas.height)?.data;
+  let data = REFS.ctx.getImageData(
+    0,
+    0,
+    REFS.canvas.width,
+    REFS.canvas.height
+  )?.data;
 
   // Calculate luminosity for each pixel
   let luminositySum = 0;
@@ -136,8 +147,15 @@ function pollLuminance() {
   let shutterSpeed = ELEMS.shutterSpeed.value;
   let iso = ELEMS.iso.value;
 
-  let suggestedShutterSpeed = METER.requiredShutterSpeed(iso, luminance, aperature);
-  let aperatureIndex = findClosestIndex(OPTIONS.shutterSpeed, suggestedShutterSpeed);
+  let suggestedShutterSpeed = METER.requiredShutterSpeed(
+    iso,
+    luminance,
+    aperature
+  );
+  let aperatureIndex = findClosestIndex(
+    OPTIONS.shutterSpeed,
+    suggestedShutterSpeed
+  );
   ELEMS.shutterSpeed.selectedIndex = aperatureIndex;
 }
 
@@ -148,7 +166,7 @@ function pollLuminance() {
 function initializeLuminancePoll() {
   // Initialize the canvas first
   REFS.canvas = document.createElement('canvas');
-  REFS.ctx =  REFS.canvas.getContext('2d', { willReadFrequently: true });
+  REFS.ctx = REFS.canvas.getContext('2d', { willReadFrequently: true });
   // Ensure the dimensions match
   REFS.canvas.width = ELEMS.video.width;
   REFS.canvas.height = ELEMS.video.height;
@@ -156,7 +174,6 @@ function initializeLuminancePoll() {
   pollLuminance();
   setInterval(pollLuminance, POLLING_INTERVAL);
 }
-
 
 /************************/
 /*** HELPER FUNCTIONS ***/
@@ -169,6 +186,8 @@ function initializeLuminancePoll() {
  * @param {number} n The number to search the array for the closest
  */
 function findClosestIndex(arr, n) {
-  let closest = arr.reduce((prev, curr) => Math.abs(curr - n) < Math.abs(prev - n) ? curr : prev);
+  let closest = arr.reduce((prev, curr) =>
+    Math.abs(curr - n) < Math.abs(prev - n) ? curr : prev
+  );
   return arr.indexOf(closest);
 }

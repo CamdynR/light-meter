@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Light Meter</title>
   <!-- Main Stylesheet -->
-  <link rel="stylesheet" href="./main.css">
+  <link rel="stylesheet" href="./styles/main.css">
   <!-- Main Script -->
-  <script type="module" src="./main.js"></script>
+  <script type="module" src="./scripts/main.js"></script>
   <!-- Favicon -->
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./icons/favicon.ico" type="image/x-icon">
+  <!-- Components -->
+  <!-- <script type="module" src="./scripts/components/select-stepper.js"></script> -->
 </head>
 <body>
   <!-- Camera -->
@@ -17,74 +19,66 @@
   <p>Luminance: <output></output></p>
 
   <form>
-    <form-field>
-      <label>
-        Aperature
-        <select name="aperature" id="aperature">
-          <option value="1.4">f/1.4</option>
-          <option value="1.8">f/1.8</option>
-          <option value="2.0">f/2.0</option>
-          <option value="2.2">f/2.2</option>
-          <option value="2.8">f/2.8</option>
-          <option value="3.2">f/3.2</option>
-          <option value="3.5">f/3.5</option>
-          <option value="4.0">f/4.0</option>
-          <option value="4.5">f/4.5</option>
-          <option value="5.0">f/5.0</option>
-          <option value="5.6">f/5.6</option>
-          <option value="6.3">f/6.3</option>
-          <option value="7.1">f/7.1</option>
-          <option value="8.0" selected>f/8.0</option>
-          <option value="9.0">f/9.0</option>
-          <option value="10.0">f/10.0</option>
-          <option value="11.0">f/11.0</option>
-          <option value="13.0">f/13.0</option>
-          <option value="14.0">f/14.0</option>
-          <option value="16.0">f/16.0</option>
-          <option value="18.0">f/18.0</option>
-          <option value="20.0">f/20.0</option>
-          <option value="22.0">f/22.0</option>
-          <option value="25.0">f/25.0</option>
-          <option value="29.0">f/29.0</option>
-          <option value="32.0">f/32.0</option>
-        </select>
-      </label>
-    </form-field>
-    <form-field>
-      <label>
-        Shutter Speed
-        <select name="shutter-speed" id="shutter-speed" readonly disabled>
-          <option value="0.0005">1/2000</option>
-          <option value="0.001">1/1000</option>
-          <option value="0.002">1/500</option>
-          <option value="0.004">1/250</option>
-          <option value="0.008" selected>1/125</option>
-          <option value="0.01666666667">1/60</option>
-          <option value="0.03333333333">1/30</option>
-          <option value="0.06666666667">1/15</option>
-          <option value="0.125">1/8</option>
-          <option value="0.25">1/4</option>
-          <option value="0.5">1/2</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="4">4</option>
-        </select>
-      </label>
-    </form-field>
-    <form-field>
-      <label>
-        ISO
-        <select name="iso" id="iso">
-          <option value="50">50</option>
-          <option value="100">100</option>
-          <option value="200">200</option>
-          <option value="400">400</option>
-          <option value="800" selected>800</option>
-          <option value="1600">1600</option>
-          <option value="3200">3200</option>
-        </select>
-      </label>
-    </form-field>
+    <select-stepper>
+      <select name="aperature" id="aperature" aria-label="aperature">
+        <option value="1.4">f/1.4</option>
+        <option value="1.8">f/1.8</option>
+        <option value="2.0">f/2.0</option>
+        <option value="2.2">f/2.2</option>
+        <option value="2.8">f/2.8</option>
+        <option value="3.2">f/3.2</option>
+        <option value="3.5">f/3.5</option>
+        <option value="4.0">f/4.0</option>
+        <option value="4.5">f/4.5</option>
+        <option value="5.0">f/5.0</option>
+        <option value="5.6">f/5.6</option>
+        <option value="6.3">f/6.3</option>
+        <option value="7.1">f/7.1</option>
+        <option value="8.0" selected>f/8.0</option>
+        <option value="9.0">f/9.0</option>
+        <option value="10.0">f/10.0</option>
+        <option value="11.0">f/11.0</option>
+        <option value="13.0">f/13.0</option>
+        <option value="14.0">f/14.0</option>
+        <option value="16.0">f/16.0</option>
+        <option value="18.0">f/18.0</option>
+        <option value="20.0">f/20.0</option>
+        <option value="22.0">f/22.0</option>
+        <option value="25.0">f/25.0</option>
+        <option value="29.0">f/29.0</option>
+        <option value="32.0">f/32.0</option>
+      </select>
+    </select-stepper>
+    <select-stepper>
+      <select name="shutter-speed" id="shutter-speed" readonly disabled
+        aria-label="shutter speed">
+        <option value="0.0005">1/2000</option>
+        <option value="0.001">1/1000</option>
+        <option value="0.002">1/500</option>
+        <option value="0.004">1/250</option>
+        <option value="0.008" selected>1/125</option>
+        <option value="0.01666666667">1/60</option>
+        <option value="0.03333333333">1/30</option>
+        <option value="0.06666666667">1/15</option>
+        <option value="0.125">1/8</option>
+        <option value="0.25">1/4</option>
+        <option value="0.5">1/2</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+      </select>
+    </select-stepper>
+    <select-stepper>
+      <select name="iso" id="iso" aria-label="iso">
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="200">200</option>
+        <option value="400">400</option>
+        <option value="800" selected>800</option>
+        <option value="1600">1600</option>
+        <option value="3200">3200</option>
+      </select>
+    </select-stepper>
   </form>
 </body>
 </html>
