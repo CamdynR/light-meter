@@ -67,10 +67,15 @@ async function initializeVideoStream() {
   return new Promise(async (resolve, reject) => {
     // Initialize the video stream
     try {
-      let streamOpts = { video: true, audio: false };
+      let streamOpts = {
+        video: { facingMode: { ideal: 'environment' } },
+        audio: false
+      };
       let stream = await navigator.mediaDevices.getUserMedia(streamOpts);
       ELEMS.video.srcObject = stream;
-      ELEMS.video.play();
+
+      let selectedCamera = stream.getVideoTracks()[0];
+      console.log(`Chosen camera deviceId: ${selectedCamera.getSettings().deviceId}`);
       // Resolve if finished
       initStream = true;
       if (initStream && initVideoSize) resolve();
