@@ -1,3 +1,3 @@
-# Simple Light Meter
+# Light Meter
 
 A work in progress, a simple light meter app
